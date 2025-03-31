@@ -1,0 +1,1 @@
+alert("Denne side er en side");
