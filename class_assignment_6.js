@@ -1,0 +1,43 @@
+class Item {
+    constructor(name, price) {
+        this.Name = name;
+        this.Price = price;
+    }
+}
+
+class Coordinate {
+    constructor(x, y) {
+        this.X = x;
+        this.Y = y;
+    }
+}
+
+class NPC {
+    constructor(health) {
+        this.Coordinate = Coordinate;
+        this.Health = health;
+        this.Inventory = [];
+    }
+}
+
+class Vendor extends NPC {
+    constructor(health) {
+        super(health);
+    }
+
+    IsDead() {
+        return this.Health <= 0;
+    }
+
+    HasItem(name) {
+        return this.Inventory.find(item => item.Name == name) ? true : false;
+    }
+}
+
+let vendor1 = new Vendor(100);
+vendor1.Coordinate = new Coordinate(70, 70);
+vendor1.Inventory = [new Item("Cheese", 45), new Item("Vodka", 187), new Item("Suicidal dragon", 300)];
+
+for (property in vendor1) {
+    console.log(vendor1[property]);
+}
