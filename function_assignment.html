@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Function Assignment</title>
+</head>
+
+<body>
+  ...
+
+  <script>
+
+    let arrayA = ["1", "to", 3, 4, null, 6, -7];
+    let arrayB = [true, "false", {}, "abc", 123, undefined, null, NaN];
+
+    function filterArray(array, callback) {
+      let result = [];
+
+      array.forEach(index => {
+        callback(index) ? result.push(index) : null;
+      });
+
+      return result;
+    }
+
+    let numbersA = filterArray(arrayA, index => (typeof index === "number") && (index >= 0)); // Har "number" og "string" fra gennemgang
+    let numbersB = filterArray(arrayB, index => (typeof index === "number") && (index >= 0));
+    
+    let stringsA = filterArray(arrayA, index => typeof index === "string");
+    let stringsB = filterArray(arrayB, index => typeof index === "string");
+    
+    let othersA = filterArray(arrayA, index => {
+      if (typeof index === "number" && index >= 0) return false;
+      if (typeof index === "string") return false;
+
+      return true;
+    });
+    let othersB = filterArray(arrayB, index => {
+      if (typeof index === "number" && index >= 0) return false;
+      if (typeof index === "string") return false;
+
+      return true;
+    });
+
+    // VALIDATION
+    console.log("Numbers A success: " + isEqual(numbersA, [3, 4, 6]));
+    console.log("Strings A success: " + isEqual(stringsA, ["1", "to"]));
+    console.log("Others A success: " + isEqual(othersA, [null, -7]));
+
+    console.log("Numbers B success: " + isEqual(numbersB, [123]));
+    console.log("Strings B success: " + isEqual(stringsB, ["false", "abc"]));
+    console.log("Others B success: " + isEqual(othersB, [true, {}, undefined, null, NaN]));
+
+    function isEqual(a, b) { return JSON.stringify(a) === JSON.stringify(b); }
+
+  </script>
+</body>
+
+</html>

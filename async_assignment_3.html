@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Async Assignment 3</title>
+        <style></style>
+    </head>
+
+    <body>
+
+        <h1>Generate Predictions from name</h1>
+        <input type="text" id="NAME_INPUT"/>
+        <button id="GENERATE_BTN">Generate</button>
+        <h3 id="PREDICTION_DATA"></h3>
+        <img src="" id="FLAG_IMG">
+
+        <script>
+            let nameInput = document.getElementById("NAME_INPUT");
+            let generateBtn = document.getElementById("GENERATE_BTN");
+            let predictionData = document.getElementById("PREDICTION_DATA");
+            let flagImg = document.getElementById("FLAG_IMG");
+
+            generateBtn.onclick = () => GetPredictions(nameInput.value);
+
+            async function GetPredictions(name) {
+                if (name === "string" && name.length !== 0 && name.indexOf(" ") === -1) {
+                    console.log("Predictions for: " + name);
+
+                    let agePredictionPromise = fetch("https://api.agify.io?name=" + name)
+                    .then(response => {
+                        let json = response.json()
+                        console.log(json);
+                        return json;
+                    })
+                    .then(json => json.age);
+
+                    let genderPredictionPromise = fetch("https://api.genderize.io?name=" + name)
+                    .then(response => {
+                        let json = response.json();
+                        console.log(json);
+                        return json;
+                    })
+                    .then(json => json.gender);
+
+                    let nationallityPredictionPromise = fetch("https://api.nationalize.io?name=" + name)
+                    .then(response => {
+                        let json = response.json();
+                        console.log(json);
+                        return json;
+                    })
+                    .then(json => json.country[0].country_id);
+                    
+                    let agePrediction = await agePredictionPromise;
+                    let genderPrediction = await genderPredictionPromise;
+                    let nationallityPrediction = await nationallityPredictionPromise;
+                    
+                    predictionData.innerText = name + " Is a " + genderPrediction + ", " + agePrediction + " years old and is from " + nationallityPrediction + ".";
+                    flagImg.src = "https://flagsapi.com/" + nationallityPrediction + "/shiny/64.png"; // Fra gennemgang
+                }
+                else alert("Invalid input. Don't use spaces, empty values or numbers.");
+            }
+
+        </script>
+    </body>
+</html>

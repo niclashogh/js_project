@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Async Assignment 2</title>
+        <style></style>
+    </head>
+
+    <body>
+
+        <button id="START_BTN">Start</button>
+        <button id="STOP_BTN">Stop</button>
+        <button id="RESET_BTN">Reset</button>
+
+        <h3 id="TIMER">00:00:000</h3>
+        
+        <script>
+            let startBtn = document.getElementById("START_BTN");
+            let stopBtn = document.getElementById("STOP_BTN");
+            stopBtn.disabled = true;
+            let resetBtn = document.getElementById("RESET_BTN");
+            let timeElement = document.getElementById("TIMER");
+
+            let startTime;
+            let timeSpan = 0;
+            let intervalId;
+
+            function ToggleButtons() {
+                startBtn.disabled = !startBtn.disabled;
+                stopBtn.disabled = !stopBtn.disabled;
+            }
+
+            function FormatTime(timeSpan) {
+                let min = Math.floor(timeSpan / 60_000);
+                let sec = Math.floor(timeSpan / 1_000) % 60;
+                let ms = timeSpan % 1000;
+
+                let minStr = min.toString().padStart(2, '0');
+                let secStr = sec.toString().padStart(2, '0');
+                let msStr = ms.toString().padStart(3, '0');
+
+                timeElement.innerText = minStr + ":" + secStr + ":" + msStr;
+            } // Fra gennemgang
+
+            startBtn.onclick = () => {
+                ToggleButtons();
+
+                startTime = Date.now() - timeSpan;
+
+                intervalId = setInterval(() => {
+                    timeSpan = Date.now() - startTime;
+                    FormatTime(timeSpan);
+                }, 100);
+
+            };
+
+            stopBtn.onclick = () => {
+                ToggleButtons();
+                clearInterval(intervalId);
+            };
+
+            resetBtn.onclick = () => {
+                startTime = Date.now();
+                timeSpan = 0;
+                FormatTime(0);
+            }; // Mindre ændring ifm. gennemgang
+
+        </script>
+    </body>
+</html>

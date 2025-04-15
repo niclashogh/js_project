@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Fetch Assignment</title>
+        <style></style>
+    </head>
+
+    <body>
+
+        <h1 id="DATA_HEADER">Loading ...</h1>
+        <hr/>
+
+        <p>Input advice category</p>
+        <input id="CATEGORY_INPUT" type="text">
+        <button id="SEARCH_BTN">Search</button>
+
+        <script>
+            let dataHeader = document.getElementById("DATA_HEADER");
+            let categoryInput = document.getElementById("CATEGORY_INPUT");
+            let searchBtn = document.getElementById("SEARCH_BTN");
+            let baseUrl = "https://api.adviceslip.com/advice"; // Forslået af ChatGPT
+
+            searchBtn.onclick = () => RecallApi();
+
+            function RecallApi() {
+                fetch(ValidateSearch() ? baseUrl + "/search/" + categoryInput.innerText : baseUrl)
+                .then(respone => {
+                    if (!respone.ok) {
+                        console.log(respone);
+                        throw new Error("Failed with statuscode: " + respone.status);
+                    }
+                    else {
+                        let jsonResponse = respone.json();
+                        console.log(jsonResponse);
+                        return jsonResponse;
+                    }
+                })
+                .then(json => dataHeader.innerText = json.slip.advice)
+                .catch(e => console.log("Failed to fetch data:\n" + e));
+            }
+
+            function ValidateSearch() {
+                return !(categoryInput.innerText === "" || categoryInput.innerText === null || categoryInput.innerText === undefined);
+            }
+
+            RecallApi();
+
+        </script>
+    </body>
+</html>

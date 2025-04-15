@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Async Assignment</title>
+        <style></style>
+    </head>
+
+    <body>
+
+        <h1 id="DATE_HEADER">Loading ...</h1>
+        <script>
+
+            setInterval(() => {
+                document.getElementById("DATE_HEADER").innerText = new Date();
+            }, 1000);
+
+        </script>
+    </body>
+</html>
